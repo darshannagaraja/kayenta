@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Netflix, Inc.
+ * Copyright 2019 Netflix, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.netflix.kayenta.canary;
+package com.netflix.kayenta.atlas.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.netflix.kayenta.atlas.model.AtlasStorage;
+import retrofit.http.GET;
 
-import javax.validation.constraints.NotNull;
+import java.util.Map;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class CanaryScopePair {
-  @NotNull
-  CanaryScope controlScope;
+public interface AtlasStorageRemoteService {
 
-  @NotNull
-  CanaryScope experimentScope;
+  @GET("/api/v1/atlas/storage.json")
+  Map<String, Map<String, AtlasStorage>> fetch();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Netflix, Inc.
+ * Copyright 2019 Netflix, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.netflix.kayenta.canary;
+package com.netflix.kayenta.atlas.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Optional;
 
-@Data
 @Builder
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class CanaryScopePair {
-  @NotNull
-  CanaryScope controlScope;
+public class AtlasStorage {
 
   @NotNull
-  CanaryScope experimentScope;
+  @Getter
+  private String global;
+
+  @NotNull
+  @Getter
+  private String regional;
+
+  @NotNull
+  @Getter
+  private List<String> regions;
+
+  public Optional<String> getRegionalCnameForRegion(String region) {
+    if (regions.contains(region)) {
+      return Optional.of(regional.replace("$(region)", region));
+    } else {
+      return Optional.empty();
+    }
+  }
 }
